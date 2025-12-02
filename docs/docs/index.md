@@ -1,0 +1,28 @@
+## Dorkhunter
+
+- This projects aims to simplify the whole process for dorking whereby it will be easier for people to goole dork for sites.
+
+## Sections
+
+- This docs contains the following sections
+
+```md
+apireference
+
+highleveldesign
+
+index.md
+
+requirements
+```
+
+| Sections          | Info about section                                                                                                   |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Api reference     | This section covers about how api are used into whole project to simplify the whole flow                             |
+| high level design | This section covers about the whole flow about database design, models and high level architecture about the project |
+| index.md          | the entry point of the project which details about how the project is organized                                      |
+| requirements      | this one details about what are the functional and non functional requirements of the project                        |
+
+## About
+
+- This project was made by [https://github.com/Njoxpy](https://github.com/Njoxpy) as a purpose for simplifying the whole flow for osint projects.
