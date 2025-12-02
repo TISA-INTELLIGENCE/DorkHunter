@@ -1,3 +1,11 @@
 site_name: Dork Hunter
+site_url: https://njoxpy.github.io/DorkHunter/
 
-theme: readthedocs
+theme:
+  name: readthedocs
+
+nav:
+  - Home: index.md
+  - Requirements:
+      - Functional: requirements/functional/functional.md
+      - Non Functional: requirements/nonfunctional/nonfunctional.md
