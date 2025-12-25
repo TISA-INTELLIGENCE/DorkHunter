@@ -1,5 +1,15 @@
 ## Dork Hunter
 
+[![MERN Stack](https://img.shields.io/badge/MERN%20Stack-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://mern.stack)
+[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
+
+[![OSINT Tool](https://img.shields.io/badge/OSINT%20Tool-blueviolet?style=for-the-badge)](https://github.com/Njoxpy/DorkHunter)
+[![Google Dorking](https://img.shields.io/badge/Google%20Dorking-red?style=for-the-badge&logo=google)](https://www.freecodecamp.org/news/google-dorking-how-to-find-hidden-information-on-the-web/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+> **An OSINT tool to simplify Google dorking** — turning ambiguous search results into clear, structured reconnaissance data.
+
 ![alt text](./asset/logo.png)
 
 DorkHunter is an advanced OSINT tool designed to simplify Google dorking and web reconnaissance. It helps users perform precise searches by removing ambiguity from Google results, providing structured and clear data outputs. Built with the MERN stack (MongoDB, Express, React, Node.js), this project streamlines the process for OSINT enthusiasts, security researchers, and investigators.
