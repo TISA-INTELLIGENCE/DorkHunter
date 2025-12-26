@@ -15,14 +15,15 @@ const Home = () => {
 
     try {
       const res = await fetch(
-        `https://serpapi.com/search.json?engine=google&q=${encodeURIComponent(
-          query
-        )}&api_key=YOUR_API_KEY`
+        `${import.meta.env.VITE_API_URL}?q=${encodeURIComponent(query)}`
       );
 
       if (!res.ok) throw new Error("Request failed");
 
       const data = await res.json();
+
+      console.log(data);
+
       navigate("/results", { state: data });
     } catch (err) {
       console.error(err.message);
