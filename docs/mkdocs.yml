@@ -9,3 +9,6 @@ nav:
   - Requirements:
       - Functional: requirements/functional/functional.md
       - Non Functional: requirements/nonfunctional/nonfunctional.md
+  - API Reference:
+      - Queries: apireference/queries.md
+      - Scans: apireference/scans.md
