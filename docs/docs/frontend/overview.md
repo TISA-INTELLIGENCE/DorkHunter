@@ -21,30 +21,44 @@ The frontend’s main goal is to provide an **interactive interface** for:
 
 ## Folder Structure
 
-```
-src/
-├─ components/
-│  ├─ Home.jsx
-│  ├─ Results.jsx
-│  ├─ Scans.jsx
-│  ├─ ScanDetails.jsx
-│  └─ NotFound.jsx
-├─ App.jsx
-├─ index.jsx
-├─ App.css
-└─ api/
-   └─ api.js (optional fetch helper)
+```sh
+├── ./App.css
+├── ./App.jsx
+├── ./assets
+│   └── ./assets/react.svg
+├── ./components
+│   ├── ./components/Queries
+│   │   ├── ./components/Queries/layout
+│   │   │   └── ./components/Queries/layout/QueryLayout.jsx
+│   │   ├── ./components/Queries/QueriesDetails.jsx
+│   │   └── ./components/Queries/Queries.jsx
+│   └── ./components/scans
+│       ├── ./components/scans/Layout
+│       │   └── ./components/scans/Layout/ScansLayout.jsx
+│       ├── ./components/scans/ScanDetails.jsx
+│       └── ./components/scans/Scans.jsx
+├── ./error
+│   └── ./error/NotFound.jsx
+├── ./Home
+│   ├── ./Home/Home.jsx
+│   └── ./Home/Results.jsx
+├── ./index.css
+├── ./layout
+│   └── ./layout/RootLayout.jsx
+├── ./main.jsx
 ```
 
 ## Routing Overview
 
-| Route        | Component       | Purpose                                 |
-| ------------ | --------------- | --------------------------------------- |
-| `/`          | Home.jsx        | Search input page                       |
-| `/results`   | Results.jsx     | Displays search results                 |
-| `/scans`     | Scans.jsx       | Lists previous scans                    |
-| `/scans/:id` | ScanDetails.jsx | Shows detailed results of a single scan |
-| `*`          | NotFound.jsx    | 404 fallback page                       |
+| Route             | Component          | Purpose                                       |
+| ----------------- | ------------------ | --------------------------------------------- |
+| `/`               | Home.jsx           | Search input page                             |
+| `/results`        | Results.jsx        | Displays search results                       |
+| `/scans`          | Scans.jsx          | Lists previous scans                          |
+| `/scans/:id`      | ScanDetails.jsx    | Shows detailed results of a single scan       |
+| `/queries`        | Queries.jsx        | Lists previous Queries made                   |
+| `/queries/:query` | QueriesDetails.jsx | Show detailed results about the query details |
+| `*`               | NotFound.jsx       | 404 fallback page                             |
 
 ## Component Overview
 
@@ -69,6 +83,16 @@ src/
 - Fetches detailed scan data by ID: `GET /api/v1/scans/:id`
 - Displays results and a **delete button**: `DELETE /api/v1/scans/:id`
 
+### Queries.jsx
+
+- Fetches and displays a list of all Queries from: `GET /api/v1/queries`
+- Each query includes a **link** to detailed view: `/queries/:id`
+
+### QueriesDetails.jsx
+
+- Fetches detailed query data by ID: `GET /api/v1/queries/:id`
+- Displays results and a **delete button**: `DELETE /api/v1/queries/:id`
+
 ### NotFound.jsx
 
 - Displayed for invalid routes.
@@ -78,6 +102,8 @@ src/
 
 1. User inputs query on **Home**.
 2. API call made to `GET /api/v1/scans?q={query}`.
-3. Data passed to **Results** component via `navigate(state)` or props.
+3. Data passed to **Results** component via `navigate(state)`.
 4. **Scans** fetches historical scans and links to **ScanDetails**.
 5. **ScanDetails** fetches full scan details and optionally deletes the scan.
+6. **Queries** fetches historical Queries and links to **QueriesDetails**.
+7. **QueriesDetails** fetches full Query details and optionally deletes the query.

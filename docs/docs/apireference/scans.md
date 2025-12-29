@@ -1,6 +1,6 @@
-## scans
+## Scans
 
-## model
+## Model
 
 ```js
 const mongoose = require("mongoose");
@@ -97,7 +97,7 @@ GET http://localhost:4000/api/v1/scans?q=facebook
 - Results are returned in an array format, typically containing multiple search results
 - Each result includes metadata to help identify and track search entries
 
-## get single scan results
+## Get Single Scan Results
 
 # Get Scan Results
 
@@ -187,9 +187,7 @@ This endpoint retrieves a **specific scan result** by its unique scan ID. It ret
 **Example:**
 
 ```
-
 [http://localhost:4000/api/v1/scans/694e61c1e7446470460fb00c](http://localhost:4000/api/v1/scans/694e61c1e7446470460fb00c)
-
 ```
 
 **Authentication:** None required
@@ -376,10 +374,8 @@ Upon successful deletion, the API returns the **deleted scan document**, includi
 | Field     | Type    | Description                               |
 | --------- | ------- | ----------------------------------------- |
 | `message` | String  | Status message confirming deletion        |
-| `sucess`  | Boolean | Indicates whether deletion was successful |
+| `success` | Boolean | Indicates whether deletion was successful |
 | `data`    | Object  | The deleted scan document                 |
-
-> ⚠️ **Note:** The field is spelled `sucess` (not `success`) in the current response.
 
 ---
 

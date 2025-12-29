@@ -1,99 +1,181 @@
 ## Overview
 
-This document explains **how data moves** through the DorkHunter frontend from user input to API responses and UI rendering.
+This document explains **how data moves** through the DorkHunter frontend from user input to API responses and UI rendering.  
+It covers **Search**, **Scans**, and **Queries** data flows.
 
 ## 1. Search Flow
 
 ```
+
 [User Input: Home.jsx]
-          |
-          v
-   API Request: GET /api/v1/scans?q={query}
-          |
-          v
-   API Response: { query, results }
-          |
-          v
-   Navigate to /results (pass data via state)
-          |
-          v
+|
+v
+API Request: GET /api/v1/scans?q={query}
+|
+v
+API Response: { query, results }
+|
+v
+Navigate to /results (pass data via state)
+|
+v
 [Results.jsx]
-  - Render list of results
-  - Each result: title, snippet, link
+
+- Render list of results
+- Each result: title, snippet, link
+
 ```
 
-**Notes:**
+Notes:
 
-- `useState` manages `query` and loading state in Home.jsx
+- `useState` manages `query`, `loading`, and `error` in `Home.jsx`
 - `navigate("/results", { state: data })` passes API response
-- Results.jsx reads `location.state` to render results
+- `Results.jsx` reads data via `useLocation().state`
+- Page refresh on `/results` should be handled (redirect or refetch)
 
 ## 2. Scan History Flow
 
 ```
+
 [Scans.jsx mounted]
-          |
-          v
-   API Request: GET /api/v1/scans/results
-          |
-          v
-   API Response: { data: [scan1, scan2, ...] }
-          |
-          v
-   Render list of scans
-          |
-          v
-   Each scan links to: /scans/:id
+|
+v
+API Request: GET /api/v1/scans/results
+|
+v
+API Response: { data: [scan1, scan2, ...] }
+|
+v
+Render list of scans
+|
+v
+Each scan links to: /scans/:id
+
 ```
 
-**Notes:**
+Notes:
 
 - `useEffect` fetches scans on component mount
-- `useState` stores scans, loading, and error states
-- Users can click a scan to view details
+- `useState` stores `scans`, `loading`, and `error`
+- Each scan card shows date, query reference, and result count
 
 ## 3. Scan Details Flow
 
 ```
+
 [ScanDetails.jsx mounted]
-          |
-          v
-   Read ID from URL: useParams()
-          |
-          v
-   API Request: GET /api/v1/scans/:id
-          |
-          v
-   API Response: { _id, query, results, createdAt, updatedAt }
-          |
-          v
-   Render scan details
-          |
-          v
-   Optional: DELETE /api/v1/scans/:id
-          |
-          v
-   On success: remove scan from list or navigate back
+|
+v
+Read ID from URL: useParams()
+|
+v
+API Request: GET /api/v1/scans/:id
+|
+v
+API Response: { \_id, query, results, createdAt }
+|
+v
+Render scan details
+|
+v
+Optional user action: Delete scan
+|
+v
+API Request: DELETE /api/v1/scans/:id
+|
+v
+Navigate back to /scans
+
 ```
 
-**Notes:**
+Notes:
 
-- `useParams()` gets dynamic scan ID from URL
-- Loading and error states handled via `useState`
-- Delete button triggers `fetch` with `method: "DELETE"`
+- `useParams()` extracts the scan ID
+- Full results are rendered on this page
+- Delete action should confirm intent before execution
 
-## 4. Error & Loading Handling
+## 4. Queries List Flow
 
-- **Loading State:** Display “Loading…” while API request is in progress
-- **Error State:** Display API error or network error messages
-- **Empty Results:** Display “No results found” if data is empty
+```
 
-## 5. Component Interaction Summary
+[Queries.jsx mounted]
+|
+v
+API Request: GET /api/v1/queries
+|
+v
+API Response: { data: [query1, query2, ...] }
+|
+v
+Render list of queries
+|
+v
+Each query links to: /queries/:id
 
-| Component       | Action / API Call             | Next Component / Effect  |
-| --------------- | ----------------------------- | ------------------------ |
-| Home.jsx        | GET `/api/v1/scans?q={query}` | Navigate to `/results`   |
-| Results.jsx     | None (receives state)         | Display results          |
-| Scans.jsx       | GET `/api/v1/scans/results`   | Display scans list       |
-| ScanDetails.jsx | GET `/api/v1/scans/:id`       | Display scan details     |
-| ScanDetails.jsx | DELETE `/api/v1/scans/:id`    | Update scans or navigate |
+```
+
+Notes:
+
+- Queries represent **search terms**, not results
+- Each query item displays:
+  - Query string
+  - Created date
+- Queries are navigational entry points to related scans
+
+## 5. Query Details Flow
+
+```
+
+[QueryDetails.jsx mounted]
+|
+v
+Read ID from URL: useParams()
+|
+v
+API Request: GET /api/v1/queries/:id
+|
+v
+API Response:
+{
+\_id,
+query,
+createdAt,
+scans: [scan1, scan2, ...]
+}
+|
+v
+Render query details
+|
+v
+Each scan links to: /scans/:scanId
+
+```
+
+Notes:
+
+- Query Details act as a **bridge** between queries and scans
+- Scans may be populated or fetched separately
+- Allows users to explore historical scans per query
+
+## 6. Error & Loading Handling
+
+- Loading state
+  Display “Loading…” while API requests are pending
+
+- Error state
+  Display API or network error messages
+
+- Empty state
+  Display “No results found” when arrays are empty
+
+## 7. Component Interaction Summary
+
+| Component        | API Call                      | Resulting Action              |
+| ---------------- | ----------------------------- | ----------------------------- |
+| Home.jsx         | GET `/api/v1/scans?q={query}` | Navigate to `/results`        |
+| Results.jsx      | None (uses state)             | Display search results        |
+| Scans.jsx        | GET `/api/v1/scans/results`   | Display scans list            |
+| ScanDetails.jsx  | GET `/api/v1/scans/:id`       | Display scan details          |
+| ScanDetails.jsx  | DELETE `/api/v1/scans/:id`    | Navigate to `/scans`          |
+| Queries.jsx      | GET `/api/v1/queries`         | Display queries list          |
+| QueryDetails.jsx | GET `/api/v1/queries/:id`     | Display query + related scans |

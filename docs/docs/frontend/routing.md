@@ -1,6 +1,6 @@
 ## Overview
 
-This document describes the routing structure of the **DorkHunter** frontend application using **React Router DOM**. It includes all page routes, the expected parameters, and associated API calls for each route.
+This document describes the routing structure of the **DorkHunter** frontend application using **React Router DOM v6**. It includes all page routes, expected parameters, and associated API calls for each route.
 
 ## Table of Contents
 
@@ -8,25 +8,27 @@ This document describes the routing structure of the **DorkHunter** frontend app
 2. [Results](#results)
 3. [Scans](#scans)
 4. [Scan Details](#scan-details)
-5. [404 / NotFound](#404--notfound)
+5. [Queries](#queries)
+6. [Query Details](#query-details)
+7. [404 / NotFound](#404--notfound)
 
 ## Home
 
 - **Path:** `/`
 - **Component:** `Home.jsx`
 - **Purpose:** Search page for entering queries.
-- **Behavior:**
 
-  - User submits a query → `GET /api/v1/scans?q={query}`
-  - Navigates to `/results` page with the API response stored in `state`.
+### Behavior
 
-**Example API Request:**
+- User submits a query  
+  → `GET /api/v1/scans?q={query}`
+- Navigates to `/results` with API response stored in `location.state`
+
+### Example API Request
 
 ```http
 GET http://localhost:4000/api/v1/scans?q=john%20hendricks
 ```
-
-**Response Structure:**
 
 ```json
 {
@@ -48,81 +50,133 @@ GET http://localhost:4000/api/v1/scans?q=john%20hendricks
 
 - **Path:** `/results`
 - **Component:** `Results.jsx`
-- **Purpose:** Display search results from the API.
-- **Behavior:**
+- **Purpose:** Display search results returned from Home.
 
-  - Receives `state` from navigation (from Home).
-  - Iterates through `results` and renders clickable links.
+### Behavior
+
+- Reads data from `useLocation().state`
+- Iterates over `results`
+- Renders clickable result links
+- Handles missing state (page refresh) gracefully
 
 ## Scans
 
 - **Path:** `/scans`
 - **Component:** `Scans.jsx`
-- **Purpose:** List all previous scans.
-- **API Endpoint:** `GET /api/v1/scans/results`
-- **Behavior:**
+- **Purpose:** Display all previously executed scans.
 
-  - Fetches all scan records.
-  - Each scan card shows creation date and summary of results.
-  - Each scan includes a **link to Scan Details**: `/scans/:id`
-
-**Example API Request:**
+### API Endpoint
 
 ```http
-GET http://localhost:4000/api/v1/scans/results
+GET /api/v1/scans/results
 ```
 
-**Response Structure:**
+### Behavior
 
-```json
-{
-  "data": [
-    {
-      "_id": "6952083747ba0bb310a5b789",
-      "query": "6952083347ba0bb310a5b787",
-      "results": [ ... ],
-      "createdAt": "2025-12-29T04:48:55.887Z"
-    }
-  ]
-}
+- Fetches all scan records on mount
+- Each scan card displays:
+
+  - Query reference
+  - Created date
+  - Result count
+
+- Each scan links to **Scan Details**
+
+### Scan Details Link
+
+```txt
+/scans/:id
 ```
 
 ## Scan Details
 
 - **Path:** `/scans/:id`
 - **Component:** `ScanDetails.jsx`
-- **Purpose:** Display detailed results for a single scan.
-- **API Endpoint:** `GET /api/v1/scans/:id`
-- **Behavior:**
+- **Purpose:** Display full details for a single scan.
 
-  - Fetches scan data by `id`.
-  - Displays full results.
-  - Provides **Delete Scan** button calling:
-
-    - `DELETE /api/v1/scans/:id`
-
-**Example API Request:**
+### API Endpoints
 
 ```http
-GET http://localhost:4000/api/v1/scans/6952083747ba0bb310a5b789
+GET    /api/v1/scans/:id
+DELETE /api/v1/scans/:id
 ```
 
-**Delete API Request:**
+### Behavior
+
+- Uses `useParams()` to extract `id`
+- Fetches scan data by ID
+- Renders all result entries
+- Provides **Delete Scan** button
+- On delete:
+
+  - Redirects back to `/scans`
+
+## Queries
+
+- **Path:** `/queries`
+- **Component:** `Queries.jsx`
+- **Purpose:** List all previously submitted queries.
+
+### API Endpoint
 
 ```http
-DELETE http://localhost:4000/api/v1/scans/6952083747ba0bb310a5b789
+GET /api/v1/queries
 ```
+
+### Behavior
+
+- Fetches all query records
+- Displays:
+
+  - Query text
+  - Created date
+
+- Each query links to **Query Details**
+
+### Query Details Link
+
+```txt
+/queries/:query
+```
+
+## Query Details
+
+- **Path:** `/queries/:query`
+- **Component:** `QueryDetails.jsx`
+- **Purpose:** Display details for a single query and its related scans.
+
+### API Endpoint
+
+```http
+GET /api/v1/queries/:query
+```
+
+### Expected Behavior
+
+- Uses `useParams()` to read query `id`
+- Fetches query metadata
+- Displays:
+
+  - Original query string
+  - Creation date
+  - Associated scans (if populated)
+
+- Each related scan links to:
+
+  - `/scans/:scanId`
 
 ## 404 / NotFound
 
 - **Path:** `*`
 - **Component:** `NotFound.jsx`
-- **Purpose:** Fallback route for unknown paths.
-- **Behavior:** Displays “Page Not Found” message.
+- **Purpose:** Handle unknown routes.
+
+### Behavior
+
+- Displays **“Page Not Found”**
 
 ## Notes
 
-- All frontend navigation is handled using **React Router DOM v6**.
-- Routes using `:id` are **dynamic** and require `useParams()` to read the value.
-- API calls are made from frontend using `fetch()` in `useEffect` or event handlers.
-- Errors should be handled gracefully and displayed to the user.
+- Uses **React Router DOM v6**
+- Dynamic routes (`:id`) rely on `useParams()`
+- API calls are made using `fetch()` inside:

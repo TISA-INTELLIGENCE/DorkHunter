@@ -1,44 +1,60 @@
-## Dorkhunter
+# DorkHunter
 
-- This projects aims to simplify the whole process for dorking whereby it will be easier for people to goole dork for sites.
+DorkHunter is an open-source tool designed to simplify Google dorking for OSINT investigations. It automates advanced searches to deliver clear, structured results eliminating the ambiguity often found in raw Google outputs.
 
 ![alt text](logo.png)
 
-## Sections
+## Documentation Sections
 
-- This docs contains the following sections
+This repository includes the following key sections:
 
-```md
-apireference
-
-highleveldesign
-
-index.md
-
-requirements
-```
-
-| Sections          | Info about section                                                                                                   |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Api reference     | This section covers about how api are used into whole project to simplify the whole flow                             |
-| high level design | This section covers about the whole flow about database design, models and high level architecture about the project |
-| index.md          | the entry point of the project which details about how the project is organized                                      |
-| requirements      | this one details about what are the functional and non functional requirements of the project                        |
+| Section           | Description                                                                             |
+| ----------------- | --------------------------------------------------------------------------------------- |
+| API Reference     | Details on how APIs are integrated to streamline the search and data retrieval process. |
+| High-Level Design | Overview of the architecture, database models, and overall system flow.                 |
+| Index             | Entry point explaining project organization and quick start guide.                      |
+| Requirements      | Functional and non-functional requirements defining the project's scope and goals.      |
 
 ## Workflow
 
-![dorkhunter flow](image-1.png)
+DorkHunter processes user inputs (domains, keywords, or custom dorks), executes targeted searches via integrated APIs, and returns structured results for easy analysis.
 
-## Problem is soves
+## Problem Solved
 
-- What problem is this project solving? How will we know when it’s successful? The problem which projects solves is that due to the use of oogle search it gives ambigous results which are not easier to rephrase and due to that by the use of google searches and by the use of dorkhunter it simplifies by removing the ambiguity during search as it gives clearly and structured data and results into the project.
+Standard Google searches often return noisy, unstructured results that require manual filtering making OSINT time-consuming and error-prone. DorkHunter addresses this by:
 
-- I will it is successfully if I will be able to get results into a clearly ans tructured way.
+- Applying advanced dorks automatically.
+- Parsing and structuring outputs (e.g., tables of subdomains, emails, or exposures).
+- Providing exports for reports.
 
-## Note
+**Success Metrics**: The project succeeds when users receive clean, actionable, and structured data consistently—reducing recon time and improving accuracy.
 
-> Ensure you have basic understanding about gooogle dorking from start to finish, if not you can learn here [https://www.freecodecamp.org/news/google-dorking-how-to-find-hidden-information-on-the-web/](https://www.freecodecamp.org/news/google-dorking-how-to-find-hidden-information-on-the-web/)
+# Documentation Index
+
+## API Reference
+
+- [Queries](./apireference/queries.md)
+- [Scans](./apireference/scans.md)
+
+## Frontend
+
+- [Overview](./frontend/overview.md)
+- [Data Flow](./frontend/data-flow.md)
+- [Routing](./frontend/routing.md)
+
+## Requirements
+
+### Functional
+
+- [Functional Requirements](./requirements/functional/functional.md)
+
+## Getting Started with Google Dorking
+
+Before diving in, ensure you understand the basics of Google dorking.  
+Learn more here: [freeCodeCamp Guide to Google Dorking](https://www.freecodecamp.org/news/google-dorking-how-to-find-hidden-information-on-the-web/)
 
 ## About
 
-- This project was made by [https://github.com/Njoxpy](https://github.com/Njoxpy) as a purpose for simplifying the whole flow for osint projects.
+Created by [Njoxpy](https://github.com/Njoxpy) to streamline OSINT workflows, particularly for digital footprint analysis and exposure scanning. Contributions welcome focus on ethical use only.
+
+- [Repository link](https://github.com/Njoxpy/DorkHunter)

@@ -1,4 +1,4 @@
-## api refernce for queries
+## API Reference for Queries
 
 - This docs contains the quick overview about queries.
 
