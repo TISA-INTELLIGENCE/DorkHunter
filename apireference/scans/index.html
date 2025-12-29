@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://njoxpy.github.io/DorkHunter/apireference/scans/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Scans - Dork Hunter</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Scans";
+        var mkdocs_page_input_path = "apireference/scans.md";
+        var mkdocs_page_url = "/DorkHunter/apireference/scans/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Dork Hunter
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Requirements</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../requirements/functional/functional/">Functional</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../requirements/nonfunctional/nonfunctional/">Non Functional</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../queries/">Queries</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Scans</a>
+    <ul class="current">
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Dork Hunter</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+      <li class="breadcrumb-item active">Scans</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="scans">scans</h2>
+<h2 id="model">model</h2>
+<pre><code class="language-js">const mongoose = require(&quot;mongoose&quot;);
+
+const ScanSchema = new mongoose.Schema(
+  {
+    query: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: &quot;Query&quot;,
+      required: true,
+    },
+
+    results: [
+      {
+        title: String,
+        link: String,
+        snippet: String,
+      },
+    ],
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model(&quot;Scan&quot;, ScanSchema);
+</code></pre>
+<h1 id="serp-api-query-endpoint">SERP API Query Endpoint</h1>
+<h2 id="overview">Overview</h2>
+<p>This endpoint queries a Search Engine Results Page (SERP) API to retrieve search results based on a provided search term. It returns structured data including titles, links, snippets, and metadata for each search result.</p>
+<h2 id="query-parameters">Query Parameters</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>q</code></td>
+<td>string</td>
+<td>Yes</td>
+<td>The search term or query string (e.g., "facebook", "postman api")</td>
+</tr>
+</tbody>
+</table>
+<h2 id="response-structure">Response Structure</h2>
+<p>The API returns a JSON object with the following structure:</p>
+<pre><code class="language-json">{
+  &quot;query&quot;: &quot;string&quot;,           // Unique query identifier
+  &quot;results&quot;: [                 // Array of search results
+    {
+      &quot;title&quot;: &quot;string&quot;,       // Page title
+      &quot;link&quot;: &quot;string&quot;,        // URL of the result
+      &quot;snippet&quot;: &quot;string&quot;,     // Brief description/excerpt
+      &quot;_id&quot;: &quot;string&quot;          // Unique result identifier
+    }
+  ],
+  &quot;_id&quot;: &quot;string&quot;,             // Document ID
+  &quot;createdAt&quot;: &quot;string&quot;,       // Timestamp when query was created
+  &quot;updatedAt&quot;: &quot;string&quot;,       // Timestamp when query was last updated
+  &quot;__v&quot;: number                // Version key
+}
+
+</code></pre>
+<h2 id="example-usage">Example Usage</h2>
+<p><strong>Request:</strong></p>
+<pre><code>GET http://localhost:4000/api/v1/scans?q=facebook
+
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;query&quot;: &quot;695157a2b0fe4b5a0befe2da&quot;,
+  &quot;results&quot;: [
+    {
+      &quot;title&quot;: &quot;Facebook - log in or sign up&quot;,
+      &quot;link&quot;: &quot;https://www.facebook.com/&quot;,
+      &quot;snippet&quot;: &quot;Create an account or log into Facebook...&quot;,
+      &quot;_id&quot;: &quot;695157b83d8263e12321dc33&quot;
+    }
+  ],
+  &quot;_id&quot;: &quot;695157b83d8263e12321dc32&quot;,
+  &quot;createdAt&quot;: &quot;2025-12-28T16:15:52.702Z&quot;,
+  &quot;updatedAt&quot;: &quot;2025-12-28T16:15:52.702Z&quot;,
+  &quot;__v&quot;: 0
+}
+</code></pre>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>The <code>q</code> parameter is required for this endpoint to function</li>
+<li>Results are returned in an array format, typically containing multiple search results</li>
+<li>Each result includes metadata to help identify and track search entries</li>
+</ul>
+<h2 id="get-single-scan-results">get single scan results</h2>
+<h1 id="get-scan-results">Get Scan Results</h1>
+<h2 id="overview_1">Overview</h2>
+<p>This endpoint retrieves all scan results from the SERP API queries. It returns a comprehensive list of search results that have been collected and stored, including metadata about each scan and the associated search results.</p>
+<h2 id="request-details">Request Details</h2>
+<p><strong>Method:</strong> <code>GET</code><br />
+<strong>Endpoint:</strong> <code>http://localhost:4000/api/v1/scans/results</code><br />
+<strong>Authentication:</strong> None required<br />
+<strong>Request Body:</strong> None</p>
+<h2 id="response-format">Response Format</h2>
+<p>The endpoint returns a JSON object with the following structure:</p>
+<h3 id="success-response-200-ok">Success Response (200 OK)</h3>
+<pre><code class="language-json">{
+  &quot;message&quot;: &quot;Retrieved successfully&quot;,
+  &quot;data&quot;: [
+    {
+      &quot;_id&quot;: &quot;695157b83d8263e12321dc32&quot;,
+      &quot;query&quot;: &quot;695157a2b0fe4b5a0befe2da&quot;,
+      &quot;results&quot;: [
+        {
+          &quot;title&quot;: &quot;Result Title&quot;,
+          &quot;link&quot;: &quot;https://example.com&quot;,
+          &quot;snippet&quot;: &quot;Description or snippet of the result...&quot;,
+          &quot;_id&quot;: &quot;695157b83d8263e12321dc33&quot;
+        }
+      ],
+      &quot;createdAt&quot;: &quot;2025-12-28T16:15:52.702Z&quot;,
+      &quot;updatedAt&quot;: &quot;2025-12-28T16:15:52.702Z&quot;,
+      &quot;__v&quot;: 0
+    }
+  ]
+}
+</code></pre>
+<h2 id="response-fields">Response Fields</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>message</code></td>
+<td>String</td>
+<td>Status message indicating the result of the operation</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>Array</td>
+<td>Array of scan result objects</td>
+</tr>
+<tr>
+<td><code>data[]._id</code></td>
+<td>String</td>
+<td>Unique identifier for the scan result</td>
+</tr>
+<tr>
+<td><code>data[].query</code></td>
+<td>String</td>
+<td>Reference ID to the original query that generated these results</td>
+</tr>
+<tr>
+<td><code>data[].results</code></td>
+<td>Array</td>
+<td>Array of individual search results from the SERP API</td>
+</tr>
+<tr>
+<td><code>data[].results[].title</code></td>
+<td>String</td>
+<td>Title of the search result</td>
+</tr>
+<tr>
+<td><code>data[].results[].link</code></td>
+<td>String</td>
+<td>URL of the search result</td>
+</tr>
+<tr>
+<td><code>data[].results[].snippet</code></td>
+<td>String</td>
+<td>Brief description or excerpt from the search result</td>
+</tr>
+<tr>
+<td><code>data[].results[]._id</code></td>
+<td>String</td>
+<td>Unique identifier for the individual search result</td>
+</tr>
+<tr>
+<td><code>data[].createdAt</code></td>
+<td>String (ISO 8601)</td>
+<td>Timestamp when the scan was created</td>
+</tr>
+<tr>
+<td><code>data[].updatedAt</code></td>
+<td>String (ISO 8601)</td>
+<td>Timestamp when the scan was last updated</td>
+</tr>
+<tr>
+<td><code>data[].__v</code></td>
+<td>Number</td>
+<td>Version key for the document</td>
+</tr>
+</tbody>
+</table>
+<h2 id="use-cases">Use Cases</h2>
+<ul>
+<li>Retrieve all historical scan results for analysis</li>
+<li>Monitor and review search engine results over time</li>
+<li>Export data for reporting or further processing</li>
+<li>Verify that queries have been executed and results stored correctly</li>
+</ul>
+<h1 id="get-single-scan-result">Get Single Scan Result</h1>
+<h2 id="overview_2">Overview</h2>
+<p>This endpoint retrieves a <strong>specific scan result</strong> by its unique scan ID. It returns the original query reference along with all SERP search results collected for that scan, including metadata and timestamps.</p>
+<hr />
+<h2 id="request-details_1">Request Details</h2>
+<p><strong>Method:</strong> <code>GET</code><br />
+<strong>Endpoint:</strong></p>
+<pre><code>
+[http://localhost:4000/api/v1/scans/:id](http://localhost:4000/api/v1/scans/:id)
+
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code>
+[http://localhost:4000/api/v1/scans/694e61c1e7446470460fb00c](http://localhost:4000/api/v1/scans/694e61c1e7446470460fb00c)
+
+</code></pre>
+<p><strong>Authentication:</strong> None required
+<strong>Request Body:</strong> None</p>
+<hr />
+<h2 id="url-parameters">URL Parameters</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Unique identifier of the scan to retrieve</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="response-format_1">Response Format</h2>
+<h3 id="success-response-200-ok_1">Success Response (200 OK)</h3>
+<pre><code class="language-json">{
+  &quot;message&quot;: &quot;Retrieved successfully&quot;,
+  &quot;success&quot;: true,
+  &quot;data&quot;: {
+    &quot;_id&quot;: &quot;694e61c1e7446470460fb00c&quot;,
+    &quot;query&quot;: &quot;694e61c0e7446470460fb00a&quot;,
+    &quot;results&quot;: [
+      {
+        &quot;title&quot;: &quot;Godbless Njox Nyagawa - Full Stack Developer&quot;,
+        &quot;link&quot;: &quot;https://njox.dev/&quot;,
+        &quot;snippet&quot;: &quot;Hi, I'm Godbless Nyagawa(Njox). Full Stack Developer driven by curiosity and discipline...&quot;,
+        &quot;_id&quot;: &quot;694e61c1e7446470460fb00d&quot;
+      }
+    ],
+    &quot;createdAt&quot;: &quot;2025-12-26T10:21:53.421Z&quot;,
+    &quot;updatedAt&quot;: &quot;2025-12-26T10:21:53.421Z&quot;,
+    &quot;__v&quot;: 0
+  }
+}
+</code></pre>
+<hr />
+<h2 id="response-fields_1">Response Fields</h2>
+<h3 id="root-level">Root Level</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>message</code></td>
+<td>String</td>
+<td>Status message of the request</td>
+</tr>
+<tr>
+<td><code>success</code></td>
+<td>Boolean</td>
+<td>Indicates whether the request was successful</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>Object</td>
+<td>Scan result object</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scan-object-data">Scan Object (<code>data</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_id</code></td>
+<td>String</td>
+<td>Unique identifier for the scan</td>
+</tr>
+<tr>
+<td><code>query</code></td>
+<td>String</td>
+<td>Reference ID of the original query</td>
+</tr>
+<tr>
+<td><code>results</code></td>
+<td>Array</td>
+<td>List of SERP search results</td>
+</tr>
+<tr>
+<td><code>createdAt</code></td>
+<td>String (ISO 8601)</td>
+<td>Time the scan was created</td>
+</tr>
+<tr>
+<td><code>updatedAt</code></td>
+<td>String (ISO 8601)</td>
+<td>Time the scan was last updated</td>
+</tr>
+<tr>
+<td><code>__v</code></td>
+<td>Number</td>
+<td>Document version key</td>
+</tr>
+</tbody>
+</table>
+<h3 id="search-result-object-dataresults">Search Result Object (<code>data.results[]</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>String</td>
+<td>Title of the search result</td>
+</tr>
+<tr>
+<td><code>link</code></td>
+<td>String</td>
+<td>URL of the result</td>
+</tr>
+<tr>
+<td><code>snippet</code></td>
+<td>String</td>
+<td>Short description or excerpt</td>
+</tr>
+<tr>
+<td><code>_id</code></td>
+<td>String</td>
+<td>Unique identifier for the search result</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="error-responses">Error Responses</h2>
+<h3 id="scan-not-found-404">Scan Not Found (404)</h3>
+<pre><code class="language-json">{
+  &quot;message&quot;: &quot;Scan not found&quot;,
+  &quot;success&quot;: false
+}
+</code></pre>
+<h3 id="invalid-id-format-400">Invalid ID Format (400)</h3>
+<pre><code class="language-json">{
+  &quot;message&quot;: &quot;Invalid scan ID&quot;,
+  &quot;success&quot;: false
+}
+</code></pre>
+<hr />
+<h2 id="use-cases_1">Use Cases</h2>
+<ul>
+<li>Retrieve detailed results for a specific OSINT scan</li>
+<li>Analyze SERP data linked to a single query</li>
+<li>Validate stored scan data</li>
+<li>Display scan results in dashboards or reports</li>
+</ul>
+<hr />
+<h2 id="notes_1">Notes</h2>
+<ul>
+<li>This endpoint returns <strong>one scan only</strong></li>
+<li>Use <code>/api/v1/scans/results</code> to retrieve <strong>all scans</strong></li>
+<li>Designed for OSINT tools like <strong>DorkHunter</strong></li>
+</ul>
+<h1 id="delete-scan-result">Delete Scan Result</h1>
+<h2 id="overview_3">Overview</h2>
+<p>This endpoint <strong>permanently deletes a specific scan result</strong> using its unique scan ID.<br />
+Upon successful deletion, the API returns the <strong>deleted scan document</strong>, including its query reference and all associated SERP results.</p>
+<hr />
+<h2 id="request-details_2">Request Details</h2>
+<p><strong>Method:</strong> <code>DELETE</code><br />
+<strong>Endpoint:</strong></p>
+<pre><code>
+[http://localhost:4000/api/v1/scans/:id](http://localhost:4000/api/v1/scans/:id)
+
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code>[http://localhost:4000/api/v1/scans/694e61c1e7446470460fb00c](http://localhost:4000/api/v1/scans/694e61c1e7446470460fb00c)
+</code></pre>
+<p><strong>Authentication:</strong> None required
+<strong>Request Body:</strong> None</p>
+<hr />
+<h2 id="url-parameters_1">URL Parameters</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Unique identifier of the scan to delete</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="response-format_2">Response Format</h2>
+<h3 id="success-response-200-ok_2">Success Response (200 OK)</h3>
+<pre><code class="language-json">{
+  &quot;message&quot;: &quot;Deleted successfully&quot;,
+  &quot;sucess&quot;: true,
+  &quot;data&quot;: {
+    &quot;_id&quot;: &quot;694e61c1e7446470460fb00c&quot;,
+    &quot;query&quot;: &quot;694e61c0e7446470460fb00a&quot;,
+    &quot;results&quot;: [
+      {
+        &quot;title&quot;: &quot;Godbless Njox Nyagawa - Full Stack Developer&quot;,
+        &quot;link&quot;: &quot;https://njox.dev/&quot;,
+        &quot;snippet&quot;: &quot;Hi, I'm Godbless Nyagawa(Njox). Full Stack Developer driven by curiosity and discipline...&quot;,
+        &quot;_id&quot;: &quot;694e61c1e7446470460fb00d&quot;
+      }
+    ],
+    &quot;createdAt&quot;: &quot;2025-12-26T10:21:53.421Z&quot;,
+    &quot;updatedAt&quot;: &quot;2025-12-26T10:21:53.421Z&quot;,
+    &quot;__v&quot;: 0
+  }
+}
+</code></pre>
+<hr />
+<h2 id="response-fields_2">Response Fields</h2>
+<h3 id="root-level_1">Root Level</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>message</code></td>
+<td>String</td>
+<td>Status message confirming deletion</td>
+</tr>
+<tr>
+<td><code>sucess</code></td>
+<td>Boolean</td>
+<td>Indicates whether deletion was successful</td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>Object</td>
+<td>The deleted scan document</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>Note:</strong> The field is spelled <code>sucess</code> (not <code>success</code>) in the current response.</p>
+</blockquote>
+<hr />
+<h3 id="deleted-scan-object-data">Deleted Scan Object (<code>data</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_id</code></td>
+<td>String</td>
+<td>Unique identifier of the deleted scan</td>
+</tr>
+<tr>
+<td><code>query</code></td>
+<td>String</td>
+<td>Reference ID of the original query</td>
+</tr>
+<tr>
+<td><code>results</code></td>
+<td>Array</td>
+<td>List of SERP results associated with the scan</td>
+</tr>
+<tr>
+<td><code>createdAt</code></td>
+<td>String (ISO 8601)</td>
+<td>Time the scan was originally created</td>
+</tr>
+<tr>
+<td><code>updatedAt</code></td>
+<td>String (ISO 8601)</td>
+<td>Time the scan was last updated</td>
+</tr>
+<tr>
+<td><code>__v</code></td>
+<td>Number</td>
+<td>Document version key</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="search-result-object-dataresults_1">Search Result Object (<code>data.results[]</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>String</td>
+<td>Title of the search result</td>
+</tr>
+<tr>
+<td><code>link</code></td>
+<td>String</td>
+<td>URL of the result</td>
+</tr>
+<tr>
+<td><code>snippet</code></td>
+<td>String</td>
+<td>Short description or excerpt</td>
+</tr>
+<tr>
+<td><code>_id</code></td>
+<td>String</td>
+<td>Unique identifier for the result</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="error-responses_1">Error Responses</h2>
+<h3 id="scan-not-found-404_1">Scan Not Found (404)</h3>
+<pre><code class="language-json">{
+  &quot;message&quot;: &quot;Scan not found&quot;,
+  &quot;success&quot;: false
+}
+</code></pre>
+<h3 id="invalid-scan-id-400">Invalid Scan ID (400)</h3>
+<pre><code class="language-json">{
+  &quot;message&quot;: &quot;Invalid scan ID&quot;,
+  &quot;success&quot;: false
+}
+</code></pre>
+<hr />
+<h2 id="use-cases_2">Use Cases</h2>
+<ul>
+<li>Remove outdated or incorrect OSINT scan results</li>
+<li>Clean up stored SERP data</li>
+<li>Enforce data retention policies</li>
+<li>Allow users to manage their scan history</li>
+</ul>
+<hr />
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../queries/" class="btn btn-neutral float-left" title="Queries"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../queries/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
