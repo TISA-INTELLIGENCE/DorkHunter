@@ -20,17 +20,21 @@ app.use(
 app.get("/", (req, res) => {
   res.status(200).json({
     message:
-      "DorkHunter is an advanced OSINT tool designed to simplify Google dorking and web reconnaissance. It helps users perform precise searches by removing ambiguity from Google results, providing structured and clear data outputs. Built with the MERN stack (MongoDB, Express, React, Node.js), this project streamlines the process for OSINT enthusiasts, security researchers, and investigators.",
-    sucess: true,
+      "DorkHunter api is an advanced OSINT tool designed to simplify Google dorking and web reconnaissance. It helps users perform precise searches by removing ambiguity from Google results, providing structured and clear data outputs. Built with the MERN stack (MongoDB, Express, React, Node.js), this project streamlines the process for OSINT enthusiasts, security researchers, and investigators.",
+    success: true,
   });
 });
 
-const scan = require("./routes/scan");
-app.use("/api/v1", scan);
+const scanRouter = require("./routes/scan");
+const queriesRouter = require("./routes/queries");
+
+app.use("/api/v1/scans", scanRouter);
+app.use("/api/v1/queries", queriesRouter);
+
 app.get("/api/healthy", (req, res) => {
   res.status(200).json({
     message: "All good",
-    sucess: true,
+    success: true,
     timesatamp: new Date().toISOString(),
     uptime: process.uptime(),
   });
@@ -39,7 +43,7 @@ app.get("/api/healthy", (req, res) => {
 app.use((req, res, next) => {
   res.status(404).json({
     message: `Url not found: ${req.url}`,
-    sucess: false,
+    success: false,
   });
 
   next();
