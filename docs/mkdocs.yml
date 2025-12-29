@@ -12,3 +12,7 @@ nav:
   - API Reference:
       - Queries: apireference/queries.md
       - Scans: apireference/scans.md
+  - Frontend Docs:
+      - Overview: frontend/overview.md
+      - Routing: frontend/routing.md
+      - Data Flow: frontend/data-flow.md
