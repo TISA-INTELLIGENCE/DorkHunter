@@ -20,7 +20,7 @@ app.use(
 app.get("/", (req, res) => {
   res.status(200).json({
     message:
-      "DorkHunter api is an advanced OSINT tool designed to simplify Google dorking and web reconnaissance. It helps users perform precise searches by removing ambiguity from Google results, providing structured and clear data outputs. Built with the MERN stack (MongoDB, Express, React, Node.js), this project streamlines the process for OSINT enthusiasts, security researchers, and investigators.",
+      "DorkHunter api is an advanced OSINT tool designed to simplify Google dorking and web reconnaissance.",
     success: true,
   });
 });

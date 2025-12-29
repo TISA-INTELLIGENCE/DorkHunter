@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [query, setQuery] = useState("");
   const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -12,21 +13,22 @@ const Home = () => {
     if (!query.trim()) return;
 
     setIsPending(true);
+    setError(null);
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}?q=${encodeURIComponent(query)}`
+        `http://localhost:4000/api/v1/scans?q=${encodeURIComponent(query)}`
       );
 
       if (!res.ok) throw new Error("Request failed");
 
       const data = await res.json();
 
-      console.log(data);
-
+      // Navigate to results page and pass data via state
       navigate("/results", { state: data });
     } catch (err) {
       console.error(err.message);
+      setError(err.message);
     } finally {
       setIsPending(false);
     }
@@ -39,7 +41,7 @@ const Home = () => {
         <div className="text-center">
           <h3 className="text-2xl font-semibold">DorkHunter</h3>
           <p className="text-sm text-gray-600">
-            simplify the whole process for dorking
+            Simplify the whole process for dorking
           </p>
         </div>
 
@@ -62,6 +64,9 @@ const Home = () => {
             {isPending ? "Searching..." : "Search"}
           </button>
         </form>
+
+        {/* Error Message */}
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
         {/* Footer */}
         <div className="text-sm text-gray-600 text-center">
