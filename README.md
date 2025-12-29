@@ -7,6 +7,7 @@
 [![OSINT Tool](https://img.shields.io/badge/OSINT%20Tool-blueviolet?style=for-the-badge)](https://github.com/Njoxpy/DorkHunter)
 [![Google Dorking](https://img.shields.io/badge/Google%20Dorking-red?style=for-the-badge&logo=google)](https://www.freecodecamp.org/news/google-dorking-how-to-find-hidden-information-on-the-web/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey?style=for-the-badge)](https://creativecommons.org/licenses/by-sa/4.0/)
 
 > **An OSINT tool to simplify Google dorking** — turning ambiguous search results into clear, structured reconnaissance data.
 
