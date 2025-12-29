@@ -47,8 +47,6 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../requirements/functional/functional/">Functional</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../requirements/nonfunctional/nonfunctional/">Non Functional</a>
-                  </li>
               </ul>
               <p class="caption"><span class="caption-text">API Reference</span></p>
               <ul>
@@ -93,91 +91,169 @@
             <div class="section" itemprop="articleBody">
               
                 <h2 id="overview">Overview</h2>
-<p>This document explains <strong>how data moves</strong> through the DorkHunter frontend from user input to API responses and UI rendering.</p>
+<p>This document explains <strong>how data moves</strong> through the DorkHunter frontend from user input to API responses and UI rendering.<br />
+It covers <strong>Search</strong>, <strong>Scans</strong>, and <strong>Queries</strong> data flows.</p>
 <h2 id="1-search-flow">1. Search Flow</h2>
-<pre><code>[User Input: Home.jsx]
-          |
-          v
-   API Request: GET /api/v1/scans?q={query}
-          |
-          v
-   API Response: { query, results }
-          |
-          v
-   Navigate to /results (pass data via state)
-          |
-          v
+<pre><code>
+[User Input: Home.jsx]
+|
+v
+API Request: GET /api/v1/scans?q={query}
+|
+v
+API Response: { query, results }
+|
+v
+Navigate to /results (pass data via state)
+|
+v
 [Results.jsx]
-  - Render list of results
-  - Each result: title, snippet, link
+
+- Render list of results
+- Each result: title, snippet, link
+
 </code></pre>
-<p><strong>Notes:</strong></p>
+<p>Notes:</p>
 <ul>
-<li><code>useState</code> manages <code>query</code> and loading state in Home.jsx</li>
+<li><code>useState</code> manages <code>query</code>, <code>loading</code>, and <code>error</code> in <code>Home.jsx</code></li>
 <li><code>navigate("/results", { state: data })</code> passes API response</li>
-<li>Results.jsx reads <code>location.state</code> to render results</li>
+<li><code>Results.jsx</code> reads data via <code>useLocation().state</code></li>
+<li>Page refresh on <code>/results</code> should be handled (redirect or refetch)</li>
 </ul>
 <h2 id="2-scan-history-flow">2. Scan History Flow</h2>
-<pre><code>[Scans.jsx mounted]
-          |
-          v
-   API Request: GET /api/v1/scans/results
-          |
-          v
-   API Response: { data: [scan1, scan2, ...] }
-          |
-          v
-   Render list of scans
-          |
-          v
-   Each scan links to: /scans/:id
+<pre><code>
+[Scans.jsx mounted]
+|
+v
+API Request: GET /api/v1/scans/results
+|
+v
+API Response: { data: [scan1, scan2, ...] }
+|
+v
+Render list of scans
+|
+v
+Each scan links to: /scans/:id
+
 </code></pre>
-<p><strong>Notes:</strong></p>
+<p>Notes:</p>
 <ul>
 <li><code>useEffect</code> fetches scans on component mount</li>
-<li><code>useState</code> stores scans, loading, and error states</li>
-<li>Users can click a scan to view details</li>
+<li><code>useState</code> stores <code>scans</code>, <code>loading</code>, and <code>error</code></li>
+<li>Each scan card shows date, query reference, and result count</li>
 </ul>
 <h2 id="3-scan-details-flow">3. Scan Details Flow</h2>
-<pre><code>[ScanDetails.jsx mounted]
-          |
-          v
-   Read ID from URL: useParams()
-          |
-          v
-   API Request: GET /api/v1/scans/:id
-          |
-          v
-   API Response: { _id, query, results, createdAt, updatedAt }
-          |
-          v
-   Render scan details
-          |
-          v
-   Optional: DELETE /api/v1/scans/:id
-          |
-          v
-   On success: remove scan from list or navigate back
+<pre><code>
+[ScanDetails.jsx mounted]
+|
+v
+Read ID from URL: useParams()
+|
+v
+API Request: GET /api/v1/scans/:id
+|
+v
+API Response: { \_id, query, results, createdAt }
+|
+v
+Render scan details
+|
+v
+Optional user action: Delete scan
+|
+v
+API Request: DELETE /api/v1/scans/:id
+|
+v
+Navigate back to /scans
+
 </code></pre>
-<p><strong>Notes:</strong></p>
+<p>Notes:</p>
 <ul>
-<li><code>useParams()</code> gets dynamic scan ID from URL</li>
-<li>Loading and error states handled via <code>useState</code></li>
-<li>Delete button triggers <code>fetch</code> with <code>method: "DELETE"</code></li>
+<li><code>useParams()</code> extracts the scan ID</li>
+<li>Full results are rendered on this page</li>
+<li>Delete action should confirm intent before execution</li>
 </ul>
-<h2 id="4-error-loading-handling">4. Error &amp; Loading Handling</h2>
+<h2 id="4-queries-list-flow">4. Queries List Flow</h2>
+<pre><code>
+[Queries.jsx mounted]
+|
+v
+API Request: GET /api/v1/queries
+|
+v
+API Response: { data: [query1, query2, ...] }
+|
+v
+Render list of queries
+|
+v
+Each query links to: /queries/:id
+
+</code></pre>
+<p>Notes:</p>
 <ul>
-<li><strong>Loading State:</strong> Display “Loading…” while API request is in progress</li>
-<li><strong>Error State:</strong> Display API error or network error messages</li>
-<li><strong>Empty Results:</strong> Display “No results found” if data is empty</li>
+<li>Queries represent <strong>search terms</strong>, not results</li>
+<li>Each query item displays:</li>
+<li>Query string</li>
+<li>Created date</li>
+<li>Queries are navigational entry points to related scans</li>
 </ul>
-<h2 id="5-component-interaction-summary">5. Component Interaction Summary</h2>
+<h2 id="5-query-details-flow">5. Query Details Flow</h2>
+<pre><code>
+[QueryDetails.jsx mounted]
+|
+v
+Read ID from URL: useParams()
+|
+v
+API Request: GET /api/v1/queries/:id
+|
+v
+API Response:
+{
+\_id,
+query,
+createdAt,
+scans: [scan1, scan2, ...]
+}
+|
+v
+Render query details
+|
+v
+Each scan links to: /scans/:scanId
+
+</code></pre>
+<p>Notes:</p>
+<ul>
+<li>Query Details act as a <strong>bridge</strong> between queries and scans</li>
+<li>Scans may be populated or fetched separately</li>
+<li>Allows users to explore historical scans per query</li>
+</ul>
+<h2 id="6-error-loading-handling">6. Error &amp; Loading Handling</h2>
+<ul>
+<li>
+<p>Loading state
+  Display “Loading…” while API requests are pending</p>
+</li>
+<li>
+<p>Error state
+  Display API or network error messages</p>
+</li>
+<li>
+<p>Empty state
+  Display “No results found” when arrays are empty</p>
+</li>
+</ul>
+<h2 id="7-component-interaction-summary">7. Component Interaction Summary</h2>
 <table>
 <thead>
 <tr>
 <th>Component</th>
-<th>Action / API Call</th>
-<th>Next Component / Effect</th>
+<th>API Call</th>
+<th>Resulting Action</th>
 </tr>
 </thead>
 <tbody>
@@ -188,8 +264,8 @@
 </tr>
 <tr>
 <td>Results.jsx</td>
-<td>None (receives state)</td>
-<td>Display results</td>
+<td>None (uses state)</td>
+<td>Display search results</td>
 </tr>
 <tr>
 <td>Scans.jsx</td>
@@ -204,7 +280,17 @@
 <tr>
 <td>ScanDetails.jsx</td>
 <td>DELETE <code>/api/v1/scans/:id</code></td>
-<td>Update scans or navigate</td>
+<td>Navigate to <code>/scans</code></td>
+</tr>
+<tr>
+<td>Queries.jsx</td>
+<td>GET <code>/api/v1/queries</code></td>
+<td>Display queries list</td>
+</tr>
+<tr>
+<td>QueryDetails.jsx</td>
+<td>GET <code>/api/v1/queries/:id</code></td>
+<td>Display query + related scans</td>
 </tr>
 </tbody>
 </table>

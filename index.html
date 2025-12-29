@@ -42,14 +42,18 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="#">Home</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#documentation-sections">Documentation Sections</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#problem-solved">Problem Solved</a>
+    </li>
     </ul>
                 </li>
               </ul>
               <p class="caption"><span class="caption-text">Requirements</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="requirements/functional/functional/">Functional</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="requirements/nonfunctional/nonfunctional/">Non Functional</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">API Reference</span></p>
@@ -91,67 +95,71 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h2 id="dorkhunter">Dorkhunter</h2>
-<ul>
-<li>This projects aims to simplify the whole process for dorking whereby it will be easier for people to goole dork for sites.</li>
-</ul>
+                <h1 id="dorkhunter">DorkHunter</h1>
+<p>DorkHunter is an open-source tool designed to simplify Google dorking for OSINT investigations. It automates advanced searches to deliver clear, structured results eliminating the ambiguity often found in raw Google outputs.</p>
 <p><img alt="alt text" src="logo.png" /></p>
-<h2 id="sections">Sections</h2>
-<ul>
-<li>This docs contains the following sections</li>
-</ul>
-<pre><code class="language-md">apireference
-
-highleveldesign
-
-index.md
-
-requirements
-</code></pre>
+<h2 id="documentation-sections">Documentation Sections</h2>
+<p>This repository includes the following key sections:</p>
 <table>
 <thead>
 <tr>
-<th>Sections</th>
-<th>Info about section</th>
+<th>Section</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Api reference</td>
-<td>This section covers about how api are used into whole project to simplify the whole flow</td>
+<td>API Reference</td>
+<td>Details on how APIs are integrated to streamline the search and data retrieval process.</td>
 </tr>
 <tr>
-<td>high level design</td>
-<td>This section covers about the whole flow about database design, models and high level architecture about the project</td>
+<td>High-Level Design</td>
+<td>Overview of the architecture, database models, and overall system flow.</td>
 </tr>
 <tr>
-<td>index.md</td>
-<td>the entry point of the project which details about how the project is organized</td>
+<td>Index</td>
+<td>Entry point explaining project organization and quick start guide.</td>
 </tr>
 <tr>
-<td>requirements</td>
-<td>this one details about what are the functional and non functional requirements of the project</td>
+<td>Requirements</td>
+<td>Functional and non-functional requirements defining the project's scope and goals.</td>
 </tr>
 </tbody>
 </table>
 <h2 id="workflow">Workflow</h2>
-<p><img alt="dorkhunter flow" src="image-1.png" /></p>
-<h2 id="problem-is-soves">Problem is soves</h2>
+<p>DorkHunter processes user inputs (domains, keywords, or custom dorks), executes targeted searches via integrated APIs, and returns structured results for easy analysis.</p>
+<h2 id="problem-solved">Problem Solved</h2>
+<p>Standard Google searches often return noisy, unstructured results that require manual filtering making OSINT time-consuming and error-prone. DorkHunter addresses this by:</p>
 <ul>
-<li>
-<p>What problem is this project solving? How will we know when it’s successful? The problem which projects solves is that due to the use of oogle search it gives ambigous results which are not easier to rephrase and due to that by the use of google searches and by the use of dorkhunter it simplifies by removing the ambiguity during search as it gives clearly and structured data and results into the project.</p>
-</li>
-<li>
-<p>I will it is successfully if I will be able to get results into a clearly ans tructured way.</p>
-</li>
+<li>Applying advanced dorks automatically.</li>
+<li>Parsing and structuring outputs (e.g., tables of subdomains, emails, or exposures).</li>
+<li>Providing exports for reports.</li>
 </ul>
-<h2 id="note">Note</h2>
-<blockquote>
-<p>Ensure you have basic understanding about gooogle dorking from start to finish, if not you can learn here <a href="https://www.freecodecamp.org/news/google-dorking-how-to-find-hidden-information-on-the-web/">https://www.freecodecamp.org/news/google-dorking-how-to-find-hidden-information-on-the-web/</a></p>
-</blockquote>
-<h2 id="about">About</h2>
+<p><strong>Success Metrics</strong>: The project succeeds when users receive clean, actionable, and structured data consistently—reducing recon time and improving accuracy.</p>
+<h1 id="documentation-index">Documentation Index</h1>
+<h2 id="api-reference">API Reference</h2>
 <ul>
-<li>This project was made by <a href="https://github.com/Njoxpy">https://github.com/Njoxpy</a> as a purpose for simplifying the whole flow for osint projects.</li>
+<li><a href="apireference/queries/">Queries</a></li>
+<li><a href="apireference/scans/">Scans</a></li>
+</ul>
+<h2 id="frontend">Frontend</h2>
+<ul>
+<li><a href="frontend/overview/">Overview</a></li>
+<li><a href="frontend/data-flow/">Data Flow</a></li>
+<li><a href="frontend/routing/">Routing</a></li>
+</ul>
+<h2 id="requirements">Requirements</h2>
+<h3 id="functional">Functional</h3>
+<ul>
+<li><a href="requirements/functional/functional/">Functional Requirements</a></li>
+</ul>
+<h2 id="getting-started-with-google-dorking">Getting Started with Google Dorking</h2>
+<p>Before diving in, ensure you understand the basics of Google dorking.<br />
+Learn more here: <a href="https://www.freecodecamp.org/news/google-dorking-how-to-find-hidden-information-on-the-web/">freeCodeCamp Guide to Google Dorking</a></p>
+<h2 id="about">About</h2>
+<p>Created by <a href="https://github.com/Njoxpy">Njoxpy</a> to streamline OSINT workflows, particularly for digital footprint analysis and exposure scanning. Contributions welcome focus on ethical use only.</p>
+<ul>
+<li><a href="https://github.com/Njoxpy/DorkHunter">Repository link</a></li>
 </ul>
               
             </div>
@@ -201,5 +209,5 @@ requirements
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2025-12-29 05:45:42.811811+00:00
+Build Date UTC : 2025-12-29 15:47:22.612360+00:00
 -->

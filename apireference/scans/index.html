@@ -47,8 +47,6 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../requirements/functional/functional/">Functional</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../requirements/nonfunctional/nonfunctional/">Non Functional</a>
-                  </li>
               </ul>
               <p class="caption"><span class="caption-text">API Reference</span></p>
               <ul class="current">
@@ -92,8 +90,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h2 id="scans">scans</h2>
-<h2 id="model">model</h2>
+                <h2 id="scans">Scans</h2>
+<h2 id="model">Model</h2>
 <pre><code class="language-js">const mongoose = require(&quot;mongoose&quot;);
 
 const ScanSchema = new mongoose.Schema(
@@ -186,7 +184,7 @@ module.exports = mongoose.model(&quot;Scan&quot;, ScanSchema);
 <li>Results are returned in an array format, typically containing multiple search results</li>
 <li>Each result includes metadata to help identify and track search entries</li>
 </ul>
-<h2 id="get-single-scan-results">get single scan results</h2>
+<h2 id="get-single-scan-results">Get Single Scan Results</h2>
 <h1 id="get-scan-results">Get Scan Results</h1>
 <h2 id="overview_1">Overview</h2>
 <p>This endpoint retrieves all scan results from the SERP API queries. It returns a comprehensive list of search results that have been collected and stored, including metadata about each scan and the associated search results.</p>
@@ -310,9 +308,7 @@ module.exports = mongoose.model(&quot;Scan&quot;, ScanSchema);
 
 </code></pre>
 <p><strong>Example:</strong></p>
-<pre><code>
-[http://localhost:4000/api/v1/scans/694e61c1e7446470460fb00c](http://localhost:4000/api/v1/scans/694e61c1e7446470460fb00c)
-
+<pre><code>[http://localhost:4000/api/v1/scans/694e61c1e7446470460fb00c](http://localhost:4000/api/v1/scans/694e61c1e7446470460fb00c)
 </code></pre>
 <p><strong>Authentication:</strong> None required
 <strong>Request Body:</strong> None</p>
@@ -569,7 +565,7 @@ Upon successful deletion, the API returns the <strong>deleted scan document</str
 <td>Status message confirming deletion</td>
 </tr>
 <tr>
-<td><code>sucess</code></td>
+<td><code>success</code></td>
 <td>Boolean</td>
 <td>Indicates whether deletion was successful</td>
 </tr>
@@ -580,9 +576,6 @@ Upon successful deletion, the API returns the <strong>deleted scan document</str
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>⚠️ <strong>Note:</strong> The field is spelled <code>sucess</code> (not <code>success</code>) in the current response.</p>
-</blockquote>
 <hr />
 <h3 id="deleted-scan-object-data">Deleted Scan Object (<code>data</code>)</h3>
 <table>

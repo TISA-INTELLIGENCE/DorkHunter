@@ -47,8 +47,6 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../requirements/functional/functional/">Functional</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../requirements/nonfunctional/nonfunctional/">Non Functional</a>
-                  </li>
               </ul>
               <p class="caption"><span class="caption-text">API Reference</span></p>
               <ul>
@@ -93,13 +91,15 @@
             <div class="section" itemprop="articleBody">
               
                 <h2 id="overview">Overview</h2>
-<p>This document describes the routing structure of the <strong>DorkHunter</strong> frontend application using <strong>React Router DOM</strong>. It includes all page routes, the expected parameters, and associated API calls for each route.</p>
+<p>This document describes the routing structure of the <strong>DorkHunter</strong> frontend application using <strong>React Router DOM v6</strong>. It includes all page routes, expected parameters, and associated API calls for each route.</p>
 <h2 id="table-of-contents">Table of Contents</h2>
 <ol>
 <li><a href="#home">Home</a></li>
 <li><a href="#results">Results</a></li>
 <li><a href="#scans">Scans</a></li>
 <li><a href="#scan-details">Scan Details</a></li>
+<li><a href="#queries">Queries</a></li>
+<li><a href="#query-details">Query Details</a></li>
 <li><a href="#404--notfound">404 / NotFound</a></li>
 </ol>
 <h2 id="home">Home</h2>
@@ -107,18 +107,16 @@
 <li><strong>Path:</strong> <code>/</code></li>
 <li><strong>Component:</strong> <code>Home.jsx</code></li>
 <li><strong>Purpose:</strong> Search page for entering queries.</li>
-<li>
-<p><strong>Behavior:</strong></p>
-</li>
-<li>
-<p>User submits a query → <code>GET /api/v1/scans?q={query}</code></p>
-</li>
-<li>Navigates to <code>/results</code> page with the API response stored in <code>state</code>.</li>
 </ul>
-<p><strong>Example API Request:</strong></p>
+<h3 id="behavior">Behavior</h3>
+<ul>
+<li>User submits a query<br />
+  → <code>GET /api/v1/scans?q={query}</code></li>
+<li>Navigates to <code>/results</code> with API response stored in <code>location.state</code></li>
+</ul>
+<h3 id="example-api-request">Example API Request</h3>
 <pre><code class="language-http">GET http://localhost:4000/api/v1/scans?q=john%20hendricks
 </code></pre>
-<p><strong>Response Structure:</strong></p>
 <pre><code class="language-json">{
   &quot;query&quot;: &quot;695209f047ba0bb310a5b7fb&quot;,
   &quot;results&quot;: [
@@ -137,84 +135,140 @@
 <ul>
 <li><strong>Path:</strong> <code>/results</code></li>
 <li><strong>Component:</strong> <code>Results.jsx</code></li>
-<li><strong>Purpose:</strong> Display search results from the API.</li>
-<li>
-<p><strong>Behavior:</strong></p>
-</li>
-<li>
-<p>Receives <code>state</code> from navigation (from Home).</p>
-</li>
-<li>Iterates through <code>results</code> and renders clickable links.</li>
+<li><strong>Purpose:</strong> Display search results returned from Home.</li>
+</ul>
+<h3 id="behavior_1">Behavior</h3>
+<ul>
+<li>Reads data from <code>useLocation().state</code></li>
+<li>Iterates over <code>results</code></li>
+<li>Renders clickable result links</li>
+<li>Handles missing state (page refresh) gracefully</li>
 </ul>
 <h2 id="scans">Scans</h2>
 <ul>
 <li><strong>Path:</strong> <code>/scans</code></li>
 <li><strong>Component:</strong> <code>Scans.jsx</code></li>
-<li><strong>Purpose:</strong> List all previous scans.</li>
-<li><strong>API Endpoint:</strong> <code>GET /api/v1/scans/results</code></li>
-<li>
-<p><strong>Behavior:</strong></p>
-</li>
-<li>
-<p>Fetches all scan records.</p>
-</li>
-<li>Each scan card shows creation date and summary of results.</li>
-<li>Each scan includes a <strong>link to Scan Details</strong>: <code>/scans/:id</code></li>
+<li><strong>Purpose:</strong> Display all previously executed scans.</li>
 </ul>
-<p><strong>Example API Request:</strong></p>
-<pre><code class="language-http">GET http://localhost:4000/api/v1/scans/results
+<h3 id="api-endpoint">API Endpoint</h3>
+<pre><code class="language-http">GET /api/v1/scans/results
 </code></pre>
-<p><strong>Response Structure:</strong></p>
-<pre><code class="language-json">{
-  &quot;data&quot;: [
-    {
-      &quot;_id&quot;: &quot;6952083747ba0bb310a5b789&quot;,
-      &quot;query&quot;: &quot;6952083347ba0bb310a5b787&quot;,
-      &quot;results&quot;: [ ... ],
-      &quot;createdAt&quot;: &quot;2025-12-29T04:48:55.887Z&quot;
-    }
-  ]
-}
+<h3 id="behavior_2">Behavior</h3>
+<ul>
+<li>Fetches all scan records on mount</li>
+<li>
+<p>Each scan card displays:</p>
+</li>
+<li>
+<p>Query reference</p>
+</li>
+<li>Created date</li>
+<li>
+<p>Result count</p>
+</li>
+<li>
+<p>Each scan links to <strong>Scan Details</strong></p>
+</li>
+</ul>
+<h3 id="scan-details-link">Scan Details Link</h3>
+<pre><code class="language-txt">/scans/:id
 </code></pre>
 <h2 id="scan-details">Scan Details</h2>
 <ul>
 <li><strong>Path:</strong> <code>/scans/:id</code></li>
 <li><strong>Component:</strong> <code>ScanDetails.jsx</code></li>
-<li><strong>Purpose:</strong> Display detailed results for a single scan.</li>
-<li><strong>API Endpoint:</strong> <code>GET /api/v1/scans/:id</code></li>
-<li>
-<p><strong>Behavior:</strong></p>
-</li>
-<li>
-<p>Fetches scan data by <code>id</code>.</p>
-</li>
-<li>Displays full results.</li>
-<li>
-<p>Provides <strong>Delete Scan</strong> button calling:</p>
+<li><strong>Purpose:</strong> Display full details for a single scan.</li>
+</ul>
+<h3 id="api-endpoints">API Endpoints</h3>
+<pre><code class="language-http">GET    /api/v1/scans/:id
+DELETE /api/v1/scans/:id
+</code></pre>
+<h3 id="behavior_3">Behavior</h3>
 <ul>
-<li><code>DELETE /api/v1/scans/:id</code></li>
-</ul>
+<li>Uses <code>useParams()</code> to extract <code>id</code></li>
+<li>Fetches scan data by ID</li>
+<li>Renders all result entries</li>
+<li>Provides <strong>Delete Scan</strong> button</li>
+<li>
+<p>On delete:</p>
+</li>
+<li>
+<p>Redirects back to <code>/scans</code></p>
 </li>
 </ul>
-<p><strong>Example API Request:</strong></p>
-<pre><code class="language-http">GET http://localhost:4000/api/v1/scans/6952083747ba0bb310a5b789
+<h2 id="queries">Queries</h2>
+<ul>
+<li><strong>Path:</strong> <code>/queries</code></li>
+<li><strong>Component:</strong> <code>Queries.jsx</code></li>
+<li><strong>Purpose:</strong> List all previously submitted queries.</li>
+</ul>
+<h3 id="api-endpoint_1">API Endpoint</h3>
+<pre><code class="language-http">GET /api/v1/queries
 </code></pre>
-<p><strong>Delete API Request:</strong></p>
-<pre><code class="language-http">DELETE http://localhost:4000/api/v1/scans/6952083747ba0bb310a5b789
+<h3 id="behavior_4">Behavior</h3>
+<ul>
+<li>Fetches all query records</li>
+<li>
+<p>Displays:</p>
+</li>
+<li>
+<p>Query text</p>
+</li>
+<li>
+<p>Created date</p>
+</li>
+<li>
+<p>Each query links to <strong>Query Details</strong></p>
+</li>
+</ul>
+<h3 id="query-details-link">Query Details Link</h3>
+<pre><code class="language-txt">/queries/:query
 </code></pre>
+<h2 id="query-details">Query Details</h2>
+<ul>
+<li><strong>Path:</strong> <code>/queries/:query</code></li>
+<li><strong>Component:</strong> <code>QueryDetails.jsx</code></li>
+<li><strong>Purpose:</strong> Display details for a single query and its related scans.</li>
+</ul>
+<h3 id="api-endpoint_2">API Endpoint</h3>
+<pre><code class="language-http">GET /api/v1/queries/:query
+</code></pre>
+<h3 id="expected-behavior">Expected Behavior</h3>
+<ul>
+<li>Uses <code>useParams()</code> to read query <code>id</code></li>
+<li>Fetches query metadata</li>
+<li>
+<p>Displays:</p>
+</li>
+<li>
+<p>Original query string</p>
+</li>
+<li>Creation date</li>
+<li>
+<p>Associated scans (if populated)</p>
+</li>
+<li>
+<p>Each related scan links to:</p>
+</li>
+<li>
+<p><code>/scans/:scanId</code></p>
+</li>
+</ul>
 <h2 id="404-notfound">404 / NotFound</h2>
 <ul>
 <li><strong>Path:</strong> <code>*</code></li>
 <li><strong>Component:</strong> <code>NotFound.jsx</code></li>
-<li><strong>Purpose:</strong> Fallback route for unknown paths.</li>
-<li><strong>Behavior:</strong> Displays “Page Not Found” message.</li>
+<li><strong>Purpose:</strong> Handle unknown routes.</li>
+</ul>
+<h3 id="behavior_5">Behavior</h3>
+<ul>
+<li>Displays <strong>“Page Not Found”</strong></li>
 </ul>
 <h2 id="notes">Notes</h2>
 <ul>
-<li>All frontend navigation is handled using <strong>React Router DOM v6</strong>.</li>
-<li>Routes using <code>:id</code> are <strong>dynamic</strong> and require <code>useParams()</code> to read the value.</li>
-<li>API calls are made from frontend using <code>fetch()</code> in <code>useEffect</code> or event handlers.</li>
-<li>Errors should be handled gracefully and displayed to the user.</li>
+<li>Uses <strong>React Router DOM v6</strong></li>
+<li>Dynamic routes (<code>:id</code>) rely on <code>useParams()</code></li>
+<li>API calls are made using <code>fetch()</code> inside:</li>
 </ul>
               
             </div>

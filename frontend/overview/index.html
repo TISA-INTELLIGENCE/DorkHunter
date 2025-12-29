@@ -47,8 +47,6 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../../requirements/functional/functional/">Functional</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../requirements/nonfunctional/nonfunctional/">Non Functional</a>
-                  </li>
               </ul>
               <p class="caption"><span class="caption-text">API Reference</span></p>
               <ul>
@@ -111,18 +109,30 @@
 <li><strong>HTTP Requests:</strong> Fetch API</li>
 </ul>
 <h2 id="folder-structure">Folder Structure</h2>
-<pre><code>src/
-├─ components/
-│  ├─ Home.jsx
-│  ├─ Results.jsx
-│  ├─ Scans.jsx
-│  ├─ ScanDetails.jsx
-│  └─ NotFound.jsx
-├─ App.jsx
-├─ index.jsx
-├─ App.css
-└─ api/
-   └─ api.js (optional fetch helper)
+<pre><code class="language-sh">├── ./App.css
+├── ./App.jsx
+├── ./assets
+│   └── ./assets/react.svg
+├── ./components
+│   ├── ./components/Queries
+│   │   ├── ./components/Queries/layout
+│   │   │   └── ./components/Queries/layout/QueryLayout.jsx
+│   │   ├── ./components/Queries/QueriesDetails.jsx
+│   │   └── ./components/Queries/Queries.jsx
+│   └── ./components/scans
+│       ├── ./components/scans/Layout
+│       │   └── ./components/scans/Layout/ScansLayout.jsx
+│       ├── ./components/scans/ScanDetails.jsx
+│       └── ./components/scans/Scans.jsx
+├── ./error
+│   └── ./error/NotFound.jsx
+├── ./Home
+│   ├── ./Home/Home.jsx
+│   └── ./Home/Results.jsx
+├── ./index.css
+├── ./layout
+│   └── ./layout/RootLayout.jsx
+├── ./main.jsx
 </code></pre>
 <h2 id="routing-overview">Routing Overview</h2>
 <table>
@@ -155,6 +165,16 @@
 <td>Shows detailed results of a single scan</td>
 </tr>
 <tr>
+<td><code>/queries</code></td>
+<td>Queries.jsx</td>
+<td>Lists previous Queries made</td>
+</tr>
+<tr>
+<td><code>/queries/:query</code></td>
+<td>QueriesDetails.jsx</td>
+<td>Show detailed results about the query details</td>
+</tr>
+<tr>
 <td><code>*</code></td>
 <td>NotFound.jsx</td>
 <td>404 fallback page</td>
@@ -183,6 +203,16 @@
 <li>Fetches detailed scan data by ID: <code>GET /api/v1/scans/:id</code></li>
 <li>Displays results and a <strong>delete button</strong>: <code>DELETE /api/v1/scans/:id</code></li>
 </ul>
+<h3 id="queriesjsx">Queries.jsx</h3>
+<ul>
+<li>Fetches and displays a list of all Queries from: <code>GET /api/v1/queries</code></li>
+<li>Each query includes a <strong>link</strong> to detailed view: <code>/queries/:id</code></li>
+</ul>
+<h3 id="queriesdetailsjsx">QueriesDetails.jsx</h3>
+<ul>
+<li>Fetches detailed query data by ID: <code>GET /api/v1/queries/:id</code></li>
+<li>Displays results and a <strong>delete button</strong>: <code>DELETE /api/v1/queries/:id</code></li>
+</ul>
 <h3 id="notfoundjsx">NotFound.jsx</h3>
 <ul>
 <li>Displayed for invalid routes.</li>
@@ -192,9 +222,11 @@
 <ol>
 <li>User inputs query on <strong>Home</strong>.</li>
 <li>API call made to <code>GET /api/v1/scans?q={query}</code>.</li>
-<li>Data passed to <strong>Results</strong> component via <code>navigate(state)</code> or props.</li>
+<li>Data passed to <strong>Results</strong> component via <code>navigate(state)</code>.</li>
 <li><strong>Scans</strong> fetches historical scans and links to <strong>ScanDetails</strong>.</li>
 <li><strong>ScanDetails</strong> fetches full scan details and optionally deletes the scan.</li>
+<li><strong>Queries</strong> fetches historical Queries and links to <strong>QueriesDetails</strong>.</li>
+<li><strong>QueriesDetails</strong> fetches full Query details and optionally deletes the query.</li>
 </ol>
               
             </div>
