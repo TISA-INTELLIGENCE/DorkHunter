@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { getJson } = require("serpapi");
 const Query = require("../models/query");
+const mongoose = require("mongoose");
 const Scan = require("../models/scan");
 
 // send request to get queries
@@ -72,8 +73,16 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
+    console.log(req.params.id);
+
     if (!id) {
       return res.status(400).json({ message: "Enter keyword" });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: "Invalid id",
+      });
     }
     const quriesResult = await Scan.findById(id);
 
