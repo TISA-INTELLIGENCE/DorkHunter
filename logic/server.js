@@ -1,21 +1,23 @@
 require("dotenv").config();
 const express = require("express");
+const morgan = require("morgan");
 const cors = require("cors");
 const ConnectDB = require("./config/DB");
 
 const app = express();
 
 app.use(express.json());
-
-const PORT = process.env.PORT || 4000;
-
-ConnectDB();
+app.use(morgan("dev"));
 
 app.use(
   cors({
     origin: ["http://localhost:5173"],
   })
 );
+
+const PORT = process.env.PORT || 4000;
+
+ConnectDB();
 
 app.get("/", (req, res) => {
   res.status(200).json({
