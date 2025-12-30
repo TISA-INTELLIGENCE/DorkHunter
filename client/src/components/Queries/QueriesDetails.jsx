@@ -5,51 +5,55 @@ const QueryDetails = () => {
   const { query } = useParams();
   const navigate = useNavigate();
 
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+
   const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [deleting, setDeleting] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/v1/queries/${query}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Query not found");
-        return res.json();
-      })
-      .then((json) => {
+    const fetchQuery = async () => {
+      try {
+        const res = await fetch(`${VITE_API_URL}queries/${query}`);
+
+        if (!res.ok) {
+          throw new Error("Query not found");
+        }
+
+        const json = await res.json();
         setData(json.data);
-      })
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
+      } catch (err) {
+        setError(err.message || "Failed to load query");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchQuery();
   }, [query]);
 
   const handleDelete = async () => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete this query?"
-    );
-    if (!confirm) return;
-
     setDeleting(true);
-    setError(null);
+    setError("");
 
     try {
-      const res = await fetch(`http://localhost:4000/api/v1/queries/${query}`, {
+      const res = await fetch(`${VITE_API_URL}queries/${query}`, {
         method: "DELETE",
       });
 
       const json = await res.json();
 
-      // Backend flaw handling
       if (!res.ok || json.data?.deletedCount === 0) {
         throw new Error("Delete failed or query not found");
       }
 
-      // Redirect back to list
-      navigate("/queries");
+      setShowConfirm(false);
+
+      setTimeout(() => {
+        navigate("/queries");
+      }, 300);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -68,17 +72,18 @@ const QueryDetails = () => {
           </p>
         </div>
 
-        {/* Content */}
+        {/* State messages */}
         {loading && <p className="text-center text-sm">Loading…</p>}
 
         {error && <p className="text-center text-sm text-red-600">{error}</p>}
 
+        {/* Content */}
         {data && (
           <>
             <div className="border border-gray-400 rounded px-4 py-3 space-y-2">
               <div>
                 <span className="text-xs text-gray-500">Query</span>
-                <p className="font-medium">{data.query}</p>
+                <p className="font-medium break-all">{data.query}</p>
               </div>
 
               <div>
@@ -94,17 +99,46 @@ const QueryDetails = () => {
               </div>
             </div>
 
-            {/* Delete Button */}
             <button
-              onClick={handleDelete}
-              disabled={deleting}
-              className="w-full border border-red-500 text-red-600 rounded px-3 py-2 font-medium hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => setShowConfirm(true)}
+              className="w-full border border-red-500 text-red-600 rounded px-3 py-2 font-medium hover:bg-red-50"
             >
-              {deleting ? "Deleting..." : "Delete Query"}
+              Delete Query
             </button>
           </>
         )}
       </div>
+
+      {/* Confirm Modal */}
+      {showConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded w-96 shadow-lg">
+            <h4 className="text-lg font-bold mb-3">Confirm Deletion</h4>
+
+            <p className="mb-5 text-gray-700">
+              Are you sure you want to delete this query? This action cannot be
+              undone.
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="px-4 py-2 border rounded"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="px-4 py-2 bg-red-600 text-white rounded disabled:opacity-50"
+              >
+                {deleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

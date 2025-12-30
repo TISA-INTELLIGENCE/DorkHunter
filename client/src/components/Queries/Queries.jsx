@@ -6,14 +6,16 @@ const Queries = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    fetch("http://localhost:4000/api/v1/queries")
+    fetch(`${VITE_API_URL}queries`)
       .then((res) => {
         if (!res.ok) throw new Error("Response not OK");
         return res.json();
       })
       .then((data) => {
-        setQueries(data.data); // ← IMPORTANT
+        setQueries(data.data);
       })
       .catch((err) => {
         setError(err.message);
@@ -36,7 +38,9 @@ const Queries = () => {
 
         {/* Content */}
         {loading && <p className="text-center text-sm">Loading…</p>}
-        {error && <p className="text-center text-sm text-red-600">{error}</p>}
+        {error && (
+          <p className="text-center text-sm text-red-600">{error.message}</p>
+        )}
 
         {!loading && !error && (
           <ul className="space-y-2">

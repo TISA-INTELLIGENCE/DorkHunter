@@ -6,6 +6,8 @@ const Home = () => {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
 
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -17,14 +19,13 @@ const Home = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:4000/api/v1/scans?q=${encodeURIComponent(query)}`
+        `${VITE_API_URL}scans?q=${encodeURIComponent(query)}`
       );
 
       if (!res.ok) throw new Error("Request failed");
 
       const data = await res.json();
 
-      // Navigate to results page and pass data via state
       navigate("/results", { state: data });
     } catch (err) {
       console.error(err.message);

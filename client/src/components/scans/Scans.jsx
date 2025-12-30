@@ -7,12 +7,14 @@ const Scans = () => {
   const [loading, setLoading] = useState(!location.state);
   const [error, setError] = useState("");
 
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    if (scans.length > 0) return; // already have scans from Home
+    if (scans.length > 0) return;
 
     const fetchScans = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/v1/scans/results");
+        const res = await fetch(`${VITE_API_URL}scans/results`);
         const data = await res.json();
 
         if (res.ok && data.success) {
@@ -45,7 +47,7 @@ const Scans = () => {
           className="mb-6 p-4 border rounded-lg shadow-sm hover:shadow-md transition"
         >
           <p className="text-sm text-gray-500 mb-2">
-            Created at: {new Date(scan.createdAt).toLocaleString()}
+            Searched at: {new Date(scan.createdAt).toLocaleString()}
           </p>
 
           <Link

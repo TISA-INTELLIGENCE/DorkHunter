@@ -1,4 +1,3 @@
-import "./App.css";
 import NotFound from "./error/NotFound";
 import Home from "./Home/Home";
 
@@ -8,6 +7,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+
 import Results from "./Home/Results";
 import Queries from "./components/Queries/Queries";
 import QueryDetails from "./components/Queries/QueriesDetails";
