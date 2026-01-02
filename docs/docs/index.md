@@ -50,8 +50,8 @@ Standard Google searches often return noisy, unstructured results that require m
 
 ## Getting Started with Google Dorking
 
-Before diving in, ensure you understand the basics of Google dorking.  
-Learn more here: [freeCodeCamp Guide to Google Dorking](https://www.freecodecamp.org/news/google-dorking-how-to-find-hidden-information-on-the-web/)
+- Before diving in, ensure you understand the basics of Google dorking.  
+- Learn more here: [freeCodeCamp Guide to Google Dorking](https://www.freecodecamp.org/news/google-dorking-how-to-find-hidden-information-on-the-web/)
 
 ## About
 
