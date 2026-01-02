@@ -16,7 +16,7 @@ const QuerySchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Query = mongoose.model("Query", QuerySchema);

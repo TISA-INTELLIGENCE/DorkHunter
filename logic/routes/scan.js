@@ -33,26 +33,48 @@ router.get("/", async (req, res) => {
       });
     }
 
-    const json = await searchSerpApi({
+    const allResults = [];
+    let params = {
       engine: queryDoc.engine || "google",
       api_key: process.env.SERPAPI_KEY,
       q: queryDoc.query,
       location: queryDoc.location || "United States",
-    });
+    };
+
+    let pageCount = 0;
+    const MAX_PAGES = 5;
+
+    while (params && pageCount < MAX_PAGES) {
+      const json = await getJson(params);
+
+      if (json.organic_results) {
+        allResults.push(
+          ...json.organic_results.map((r) => ({
+            title: r.title,
+            link: r.link,
+            snippet: r.snippet,
+          })),
+        );
+      }
+
+      if (json.serpapi_pagination && json.serpapi_pagination.next) {
+        const nextUrl = new URL(json.serpapi_pagination.next);
+        params = Object.fromEntries(nextUrl.searchParams);
+        params.api_key = process.env.SERPAPI_KEY;
+        pageCount++;
+      } else {
+        params = null;
+      }
+    }
 
     const scan = await Scan.create({
       query: queryDoc._id,
-      results: (json.organic_results || []).map((r) => ({
-        title: r.title,
-        link: r.link,
-        snippet: r.snippet,
-      })),
+      results: allResults,
     });
 
     res.json(scan);
   } catch (error) {
     console.error("Scan Error:", error);
-
     if (!res.headersSent) {
       res.status(500).json({ error: error.message || "Internal server error" });
     }
