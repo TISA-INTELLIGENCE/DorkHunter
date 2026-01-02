@@ -52,7 +52,7 @@ const Scans = () => {
 
           <Link
             to={`/scans/${scan._id}`}
-            className="text-blue-600 font-bold hover:underline mb-2 block"
+            className="text-blue-500 font-bold hover:underline mb-2 block"
           >
             View Scan Details
           </Link>
@@ -64,7 +64,7 @@ const Scans = () => {
                   href={result.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline font-semibold"
+                  className="text-blue-500 hover:underline font-semibold"
                 >
                   {result.title}
                 </a>
