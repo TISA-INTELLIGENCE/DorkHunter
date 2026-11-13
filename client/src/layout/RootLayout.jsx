@@ -13,6 +13,22 @@ const RootLayout = () => {
           </li>
           <li>
             <Link
+              to="/recon"
+              className="text-black font-medium hover:text-blue-600"
+            >
+              Recon
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/campaigns"
+              className="text-black font-medium hover:text-blue-600"
+            >
+              Campaigns
+            </Link>
+          </li>
+          <li>
+            <Link
               to="/results"
               className="text-black font-medium hover:text-blue-600"
             >

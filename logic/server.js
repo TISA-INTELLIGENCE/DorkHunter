@@ -29,9 +29,11 @@ app.get("/", (req, res) => {
 
 const scanRouter = require("./routes/scan");
 const queriesRouter = require("./routes/queries");
+const reconRouter = require("./routes/recon");
 
 app.use("/api/v1/scans", scanRouter);
 app.use("/api/v1/queries", queriesRouter);
+app.use("/api/v1/recon", reconRouter);
 
 app.get("/api/healthy", (req, res) => {
   res.status(200).json({

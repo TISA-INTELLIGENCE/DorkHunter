@@ -15,6 +15,9 @@ import QueryLayout from "./components/Queries/layout/QueryLayout";
 import ScansLayout from "./components/scans/Layout/ScansLayout";
 import Scans from "./components/scans/Scans";
 import ScanDetails from "./components/scans/ScanDetails";
+import Recon from "./components/recon/Recon";
+import Campaigns from "./components/recon/Campaigns";
+import CampaignDetails from "./components/recon/CampaignDetails";
 import RootLayout from "./layout/RootLayout";
 
 const router = createBrowserRouter(
@@ -22,6 +25,9 @@ const router = createBrowserRouter(
     <Route>
       <Route element={<RootLayout />}>
         <Route index element={<Home />} />
+        <Route path="recon" element={<Recon />} />
+        <Route path="campaigns" element={<Campaigns />} />
+        <Route path="campaigns/:id" element={<CampaignDetails />} />
         <Route path="results" element={<Results />} />
         <Route path="queries" element={<QueryLayout />}>
           <Route index element={<Queries />} />
@@ -34,8 +40,8 @@ const router = createBrowserRouter(
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
-    </Route>
-  )
+    </Route>,
+  ),
 );
 function App() {
   return <RouterProvider router={router} />;
